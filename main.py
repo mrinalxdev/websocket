@@ -13,7 +13,9 @@ import sys
 # ======================
 
 class WebSocketFrame:
-    """Handles WebSocket frame encoding/decoding according to RFC 6455"""
+    """will be handling RFC 6544
+    v.0.1 - text, binary, close, ping
+    """
     OPCODE_CONT = 0x0
     OPCODE_TEXT = 0x1
     OPCODE_BINARY = 0x2
@@ -24,7 +26,7 @@ class WebSocketFrame:
     @staticmethod
     def create_frame(payload, opcode=OPCODE_TEXT, mask=True):
         """
-        Create a WebSocket frame
+        creating a WebSocket frame
         - FIN bit set (1)
         - RSV bits cleared (0)
         - Payload masked for client-to-server
@@ -104,7 +106,6 @@ class WebSocketServer:
         self.running = False
     
     def _handshake(self, client_sock):
-        """Perform WebSocket handshake (HTTP upgrade)"""
         data = client_sock.recv(4096).decode('utf-8')
         if not data.startswith('GET'):
             return False
